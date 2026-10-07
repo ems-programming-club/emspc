@@ -19,7 +19,7 @@ This site is where we share what our club's about, what we're building, and how 
 ## Tech Stack
 
 - HTML / CSS
-- GitHub Pages for hosting
+- Vercel for hosting
 
 ## Contributing
 
