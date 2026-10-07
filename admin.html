@@ -43,7 +43,7 @@
   if (m) { sessionStorage.setItem("emspc_t", m[1]); history.replaceState(null, "", location.pathname); }
   const tok = sessionStorage.getItem("emspc_t");
 
-  $("loginBtn").onclick = () => (location.href = API + "/login");
+  $("loginBtn").onclick = () => (location.href = API + "/login?return=" + encodeURIComponent(location.origin));
 
   async function init() {
     if (tok) {
