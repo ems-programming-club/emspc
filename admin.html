@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>EMSPC Admin</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    main { max-width: 560px; margin: 3rem auto; padding: 0 1rem; display: grid; gap: .8rem; }
+    input, textarea, button { font: inherit; padding: .6rem; border-radius: 8px; }
+    label { display: inline-flex; gap: .3rem; margin-right: .8rem; }
+    pre { white-space: pre-wrap; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>EMSPC Admin</h1>
+  <section id="login" hidden>
+    <button id="loginBtn">Login with GitHub</button>
+  </section>
+  <section id="panel" hidden>
+    <p>Signed in as <b id="who"></b></p>
+    <input id="title" placeholder="Title" maxlength="100">
+    <textarea id="body" rows="5" placeholder="Announcement" maxlength="1000"></textarea>
+    <input id="img" placeholder="Image URL (https, required for Instagram)">
+    <div>
+      <label><input type="checkbox" value="push" checked> Push</label>
+      <label><input type="checkbox" value="discord" checked> Discord</label>
+      <label><input type="checkbox" value="telegram" checked> Telegram</label>
+      <label><input type="checkbox" value="instagram"> Instagram</label>
+    </div>
+    <button id="send">Send announcement</button>
+    <pre id="out"></pre>
+  </section>
+</main>
+<script>
+  const API = "https://emspc-portal.emspc.workers.dev"; // set after first deploy
+  const $ = (id) => document.getElementById(id);
+
+  const m = location.hash.match(/t=([^&]+)/);
+  if (m) { sessionStorage.setItem("emspc_t", m[1]); history.replaceState(null, "", location.pathname); }
+  const tok = sessionStorage.getItem("emspc_t");
+
+  $("loginBtn").onclick = () => (location.href = API + "/login");
+
+  async function init() {
+    if (tok) {
+      const r = await fetch(API + "/me", { headers: { Authorization: "Bearer " + tok } }).catch(() => null);
+      if (r && r.ok) {
+        $("who").textContent = (await r.json()).user;
+        $("panel").hidden = false;
+        return;
+      }
+      sessionStorage.removeItem("emspc_t");
+    }
+    $("login").hidden = false;
+  }
+
+  $("send").onclick = async () => {
+    const channels = [...document.querySelectorAll("#panel input[type=checkbox]:checked")].map((c) => c.value);
+    $("out").textContent = "sending...";
+    const r = await fetch(API + "/announce", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: $("title").value, body: $("body").value, imageUrl: $("img").value || undefined, channels }),
+    });
+    const j = await r.json();
+    $("out").textContent = Object.entries(j).map(([k, v]) => (v === "ok" ? "✅ " : "❌ ") + k + (v === "ok" ? "" : ": " + v)).join("\n");
+  };
+
+  init();
+</script>
+</body>
+</html>

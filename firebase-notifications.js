@@ -11,6 +11,7 @@ const firebaseConfig = {
 };
 
 const VAPID_KEY = "BJy9-3lYbONud5DEa1_Ga6EF58UGeickptqia54AdS-JQzKHHKZs41GwLBY50AvY_pyfBCaDwAGYxo5JEK2FHGM";
+const PORTAL_API = "https://emspc-portal.emspc.workers.dev"; // set after first deploy
 
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
@@ -52,7 +53,12 @@ async function enableNotifications() {
       serviceWorkerRegistration: registration
     });
 
-    console.log("FCM registration token:", token);
+    // register this device with the announcements topic via the portal Worker
+    await fetch(PORTAL_API + "/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
   } catch (err) {
     console.error("Error enabling notifications:", err);
   }
