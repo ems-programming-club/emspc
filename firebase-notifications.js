@@ -33,6 +33,45 @@ function updateButtonState() {
   }
 }
 
+const FCM_SW_SCOPE = "/firebase-cloud-messaging-push-scope";
+const SUB_KEY = "emspc_fcm_sub";
+const SUB_TTL = 7 * 24 * 3600 * 1000;
+
+// Firebase gets its own scope so /service-worker.js (scope "/") cannot replace it
+async function getFcmRegistration() {
+  const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js", { scope: FCM_SW_SCOPE });
+  const sw = registration.installing || registration.waiting || registration.active;
+  if (sw && sw.state !== "activated") {
+    await new Promise((resolve) => {
+      sw.addEventListener("statechange", () => { if (sw.state === "activated") resolve(); });
+    });
+  }
+  return registration;
+}
+
+// Get this device FCM token and register it with the portal Worker (announcements topic)
+async function subscribeDevice() {
+  const registration = await getFcmRegistration();
+  const token = await getToken(messaging, { vapidKey: VAPID_KEY, serviceWorkerRegistration: registration });
+  if (!token) return;
+
+  try {
+    const last = JSON.parse(localStorage.getItem(SUB_KEY) || "null");
+    if (last && last.token === token && Date.now() - last.t < SUB_TTL) return; // already subscribed recently
+  } catch (e) { /* storage unavailable */ }
+
+  const res = await fetch(PORTAL_API + "/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token })
+  });
+  if (!res.ok) {
+    console.warn("Push subscribe failed:", res.status);
+    return;
+  }
+  try { localStorage.setItem(SUB_KEY, JSON.stringify({ token, t: Date.now() })); } catch (e) { /* ignore */ }
+}
+
 async function enableNotifications() {
   if (!("Notification" in window) || !("serviceWorker" in navigator)) {
     console.warn("Push notifications not supported in this browser.");
@@ -42,23 +81,8 @@ async function enableNotifications() {
   try {
     const permission = await Notification.requestPermission();
     updateButtonState();
-
     if (permission !== "granted") return;
-
-    const registration = await navigator.serviceWorker.register("/firebase-messaging-sw.js");
-    await navigator.serviceWorker.ready; // wait until SW is actually active, not just registered
-
-    const token = await getToken(messaging, {
-      vapidKey: VAPID_KEY,
-      serviceWorkerRegistration: registration
-    });
-
-    // register this device with the announcements topic via the portal Worker
-    await fetch(PORTAL_API + "/subscribe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
+    await subscribeDevice();
   } catch (err) {
     console.error("Error enabling notifications:", err);
   }
@@ -77,3 +101,8 @@ onMessage(messaging, (payload) => {
     new Notification(title, { body, icon: "icons/icon-192.png" });
   }
 });
+
+// Permission was already granted on an earlier visit: make sure this device is subscribed
+if ("Notification" in window && "serviceWorker" in navigator && Notification.permission === "granted") {
+  subscribeDevice().catch((err) => console.error("Re-subscribe failed:", err));
+}

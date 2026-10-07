@@ -1,4 +1,4 @@
-const CACHE_NAME = "ems-cs-club-v6";
+const CACHE_NAME = "ems-cs-club-v7";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
