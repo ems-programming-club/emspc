@@ -62,11 +62,19 @@ a { color: var(--md-sys-color-primary); }
     flex: none;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     padding: 6px 12px 6px 8px;
     background: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
     z-index: 4;
+}
+
+.topbar-sep {
+    flex: none;
+    align-self: center;
+    width: 1px;
+    height: 24px;
+    background: var(--md-sys-color-outline-variant);
 }
 
 .app { flex: 1 1 auto; height: auto; min-height: 0; }
