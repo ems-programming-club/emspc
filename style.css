@@ -185,13 +185,20 @@ a { color: var(--md-sys-color-primary); }
     padding: 8px 8px 4px;
 }
 .drawer-actions { display: flex; align-items: center; gap: 8px; }
-.drawer-actions .drawer-github { flex: 1 1 auto; }
-.drawer-github-icon { display: block; }
+.drawer-actions .drawer-github,
+.drawer-actions .drawer-discord { flex: 1 1 0; min-width: 0; }
+.drawer-github-icon,
+.drawer-discord-icon { display: block; }
 
 .drawer-vbucks { width: 100%; }
 
 /* ---------- Page headings ---------- */
 .page-title { display: block; margin: 8px 0 24px; }
+.page-note {
+    margin: -12px 0 24px;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: var(--md-sys-typescale-body-medium-font-size, 0.875rem);
+}
 
 .section { margin: 0 0 40px; }
 .section > m3e-heading { display: block; margin-bottom: 16px; }

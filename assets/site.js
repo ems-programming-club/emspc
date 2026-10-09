@@ -115,7 +115,7 @@
         adminSwitch.addEventListener("change", function () {
             write(ADMIN_LINK_KEY, adminSwitch.checked ? "1" : "0");
             if (adminSwitch.checked && window.M3eSnackbar) {
-                window.M3eSnackbar.open("Only authorized users can use the Announcement Manager.", true);
+                window.M3eSnackbar.open("Only authorized users can access Announcements.", true);
             }
             refreshAdmin();
         });
