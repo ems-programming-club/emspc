@@ -5,6 +5,7 @@
 
     var TOKEN_KEY = "emspc_t";
     var PRESET_KEY = "emspc-preset";
+    var ACCENT_KEY = "emspc-accent";
     var ADMIN_LINK_KEY = "emspc-admin-link";
 
     // preset -> the color scheme the m3e-theme should use
@@ -15,6 +16,13 @@
         "macchiato": "dark",
         "mocha": "dark"
     };
+
+    // Catppuccin accent colours; each maps to a `--ctp-<name>` variable that the
+    // Catppuccin presets define, so the accent follows the selected flavour.
+    var ACCENTS = [
+        "rosewater", "flamingo", "pink", "mauve", "red", "maroon", "peach",
+        "yellow", "green", "teal", "sky", "sapphire", "blue", "lavender"
+    ];
 
     // preset -> { light, dark } surface used for the browser/status-bar theme colour
     var PRESET_COLORS = {
@@ -69,6 +77,44 @@
         syncThemeColor(scheme, name);
     }
 
+    // ---- Accent colour (Catppuccin) ----
+    // The accent only makes sense with a Catppuccin flavour, so it is applied
+    // when a flavour preset is active and ignored on "default".
+    var accentList = document.getElementById("accent-list");
+    var accent = read(ACCENT_KEY) || ""; // "" = full palette
+    if (ACCENTS.indexOf(accent) === -1) accent = "";
+
+    function setAccentAttr(name) {
+        [document.documentElement, theme].forEach(function (el) {
+            if (!el) return;
+            if (name) el.setAttribute("data-accent", name);
+            else el.removeAttribute("data-accent");
+        });
+    }
+
+    function applyAccent() {
+        var flavour = (read(PRESET_KEY) || "default") !== "default";
+        var active = flavour && ACCENTS.indexOf(accent) > -1 ? accent : "";
+        setAccentAttr(active);
+        if (accentList) {
+            accentList.toggleAttribute("disabled", !flavour);
+            accentList.setAttribute("aria-disabled", String(!flavour));
+        }
+    }
+
+    if (accentList) {
+        var accentOptions = Array.prototype.slice.call(accentList.querySelectorAll("m3e-list-option"));
+        accentOptions.forEach(function (o) {
+            o.selected = o.value === (accent || "full");
+        });
+        accentList.addEventListener("change", function () {
+            var value = accentList.value;
+            accent = ACCENTS.indexOf(value) > -1 ? value : "";
+            write(ACCENT_KEY, accent || null);
+            applyAccent();
+        });
+    }
+
     var presetList = document.getElementById("preset-list");
     if (presetList) {
         var current = read(PRESET_KEY) || "default";
@@ -78,15 +124,18 @@
             o.selected = o.value === current;
         });
         applyPreset(current);
+        applyAccent();
 
         presetList.addEventListener("change", function () {
             var value = presetList.value || "default";
             applyPreset(value);
             write(PRESET_KEY, value);
+            applyAccent();
         });
     } else {
         // Other pages: make sure the saved preset is applied even without the chooser.
         applyPreset(read(PRESET_KEY) || "default");
+        applyAccent();
     }
 
     // ---- Admin portal link ----

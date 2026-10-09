@@ -486,6 +486,11 @@ a { color: var(--md-sys-color-primary); }
 }
 
 .preset-list { --m3e-list-item-container-shape: var(--md-sys-shape-corner-large, 16px); }
+.accent-head { margin: 32px 0 8px; }
+.accent-list[disabled] {
+    opacity: .55;
+    pointer-events: none;
+}
 .swatch {
     display: inline-block;
     width: 28px;
@@ -493,6 +498,11 @@ a { color: var(--md-sys-color-primary); }
     border-radius: 50%;
     background: var(--swatch, var(--md-sys-color-primary));
     box-shadow: inset 0 0 0 1px var(--md-sys-color-outline-variant);
+}
+.swatch-full {
+    background: var(--swatch, conic-gradient(
+        var(--ctp-blue), var(--ctp-mauve), var(--ctp-teal), var(--ctp-blue)
+    ));
 }
 
 /* ---------- Admin ---------- */
@@ -652,4 +662,58 @@ m3e-theme:is([data-preset="latte"], [data-preset="frappe"], [data-preset="macchi
     --md-sys-color-tertiary-fixed-dim: color-mix(in srgb, var(--ctp-teal) 48%, var(--ctp-base));
     --md-sys-color-on-tertiary-fixed: var(--ctp-base);
     --md-sys-color-on-tertiary-fixed-variant: color-mix(in srgb, var(--ctp-teal) 72%, var(--ctp-base));
+}
+
+/* ---- Accent colour overrides ----
+   Chosen on the Settings page. Each accent maps to a `--ctp-*` variable the
+   flavours define, so it follows the selected flavour. Applied after the
+   flavour block above so it wins. Only present with a Catppuccin preset
+   (site.js never sets `data-accent` for "default"). */
+html[data-accent="rosewater"], m3e-theme[data-accent="rosewater"] { --accent: var(--ctp-rosewater); }
+html[data-accent="flamingo"],  m3e-theme[data-accent="flamingo"]  { --accent: var(--ctp-flamingo); }
+html[data-accent="pink"],      m3e-theme[data-accent="pink"]      { --accent: var(--ctp-pink); }
+html[data-accent="mauve"],     m3e-theme[data-accent="mauve"]     { --accent: var(--ctp-mauve); }
+html[data-accent="red"],       m3e-theme[data-accent="red"]       { --accent: var(--ctp-red); }
+html[data-accent="maroon"],    m3e-theme[data-accent="maroon"]    { --accent: var(--ctp-maroon); }
+html[data-accent="peach"],     m3e-theme[data-accent="peach"]     { --accent: var(--ctp-peach); }
+html[data-accent="yellow"],    m3e-theme[data-accent="yellow"]    { --accent: var(--ctp-yellow); }
+html[data-accent="green"],     m3e-theme[data-accent="green"]     { --accent: var(--ctp-green); }
+html[data-accent="teal"],      m3e-theme[data-accent="teal"]      { --accent: var(--ctp-teal); }
+html[data-accent="sky"],       m3e-theme[data-accent="sky"]       { --accent: var(--ctp-sky); }
+html[data-accent="sapphire"],  m3e-theme[data-accent="sapphire"]  { --accent: var(--ctp-sapphire); }
+html[data-accent="blue"],      m3e-theme[data-accent="blue"]      { --accent: var(--ctp-blue); }
+html[data-accent="lavender"],  m3e-theme[data-accent="lavender"]  { --accent: var(--ctp-lavender); }
+
+html[data-accent], m3e-theme[data-accent] {
+    --md-sys-color-primary: var(--accent);
+    --md-sys-color-on-primary: var(--ctp-base);
+    --md-sys-color-primary-container: color-mix(in srgb, var(--accent) 24%, var(--ctp-surface0));
+    --md-sys-color-on-primary-container: var(--ctp-text);
+
+    --md-sys-color-secondary: var(--accent);
+    --md-sys-color-on-secondary: var(--ctp-base);
+    --md-sys-color-secondary-container: color-mix(in srgb, var(--accent) 24%, var(--ctp-surface0));
+    --md-sys-color-on-secondary-container: var(--ctp-text);
+
+    --md-sys-color-tertiary: var(--accent);
+    --md-sys-color-on-tertiary: var(--ctp-base);
+    --md-sys-color-tertiary-container: color-mix(in srgb, var(--accent) 24%, var(--ctp-surface0));
+    --md-sys-color-on-tertiary-container: var(--ctp-text);
+
+    --md-sys-color-inverse-primary: color-mix(in srgb, var(--accent) 60%, var(--ctp-base));
+
+    --md-sys-color-primary-fixed: color-mix(in srgb, var(--accent) 22%, var(--ctp-base));
+    --md-sys-color-primary-fixed-dim: color-mix(in srgb, var(--accent) 48%, var(--ctp-base));
+    --md-sys-color-on-primary-fixed: var(--ctp-base);
+    --md-sys-color-on-primary-fixed-variant: color-mix(in srgb, var(--accent) 72%, var(--ctp-base));
+
+    --md-sys-color-secondary-fixed: color-mix(in srgb, var(--accent) 22%, var(--ctp-base));
+    --md-sys-color-secondary-fixed-dim: color-mix(in srgb, var(--accent) 48%, var(--ctp-base));
+    --md-sys-color-on-secondary-fixed: var(--ctp-base);
+    --md-sys-color-on-secondary-fixed-variant: color-mix(in srgb, var(--accent) 72%, var(--ctp-base));
+
+    --md-sys-color-tertiary-fixed: color-mix(in srgb, var(--accent) 22%, var(--ctp-base));
+    --md-sys-color-tertiary-fixed-dim: color-mix(in srgb, var(--accent) 48%, var(--ctp-base));
+    --md-sys-color-on-tertiary-fixed: var(--ctp-base);
+    --md-sys-color-on-tertiary-fixed-variant: color-mix(in srgb, var(--accent) 72%, var(--ctp-base));
 }
