@@ -1,0 +1,69 @@
+---
+layout: default
+title: Settings
+---
+
+<m3e-heading variant="display" size="small" emphasized level="1" class="page-title">Settings</m3e-heading>
+
+<section class="section" aria-labelledby="appearance-h">
+    <m3e-heading id="appearance-h" variant="headline" size="medium" level="2">Appearance</m3e-heading>
+    <p class="section-intro">Choose a colour preset. Your choice is saved on this device.</p>
+
+    <m3e-selection-list id="preset-list" class="preset-list" aria-label="Colour preset">
+        <m3e-list-option value="default" selected>
+            <span slot="leading" class="swatch" style="--swatch:#4492d8"></span>
+            Default
+            <span slot="supporting-text">Material 3 dynamic colour from the club blue</span>
+        </m3e-list-option>
+        <m3e-list-option value="latte">
+            <span slot="leading" class="swatch" style="--swatch:#1e66f5"></span>
+            Catppuccin Latte
+            <span slot="supporting-text">Light</span>
+        </m3e-list-option>
+        <m3e-list-option value="frappe">
+            <span slot="leading" class="swatch" style="--swatch:#8caaee"></span>
+            Catppuccin Frappé
+            <span slot="supporting-text">Dark</span>
+        </m3e-list-option>
+        <m3e-list-option value="macchiato">
+            <span slot="leading" class="swatch" style="--swatch:#8aadf4"></span>
+            Catppuccin Macchiato
+            <span slot="supporting-text">Dark</span>
+        </m3e-list-option>
+        <m3e-list-option value="mocha">
+            <span slot="leading" class="swatch" style="--swatch:#89b4fa"></span>
+            Catppuccin Mocha
+            <span slot="supporting-text">Dark</span>
+        </m3e-list-option>
+    </m3e-selection-list>
+</section>
+
+<section class="section" aria-labelledby="admin-h">
+    <m3e-heading id="admin-h" variant="headline" size="medium" level="2">Admin Portal</m3e-heading>
+    <m3e-card variant="outlined" class="panel">
+        <div slot="content">
+            <label class="setting-row" for="admin-link-switch">
+                <span class="setting-text">
+                    <span class="setting-title">Show Admin Portal in the sidebar</span>
+                    <span class="setting-sub" id="admin-link-status">Adds the Admin Portal to the sidebar. Only authorized users can sign in.</span>
+                </span>
+                <m3e-switch id="admin-link-switch" icons="both" aria-describedby="admin-link-status"></m3e-switch>
+            </label>
+        </div>
+    </m3e-card>
+</section>
+
+<section class="section" aria-labelledby="notify-h">
+    <m3e-heading id="notify-h" variant="headline" size="medium" level="2">Notifications</m3e-heading>
+    <m3e-card variant="outlined" class="panel">
+        <div slot="content">
+            <label class="setting-row" for="notify-switch">
+                <span class="setting-text">
+                    <span class="setting-title">Push notifications</span>
+                    <span class="setting-sub" id="notify-status">Get club announcements on this device.</span>
+                </span>
+                <m3e-switch id="notify-switch" icons="both" aria-describedby="notify-status"></m3e-switch>
+            </label>
+        </div>
+    </m3e-card>
+</section>

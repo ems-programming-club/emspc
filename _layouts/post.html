@@ -3,14 +3,17 @@ layout: default
 ---
 
 <article class="post">
-  <a href="/blogs.html" class="back-link">← Back to Blogs</a>
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <div class="post-meta">
-      <time datetime="{{ page.date }}">{{ page.date | date: "%B %d, %Y" }}</time>
+    <m3e-button variant="text" href="/blogs.html" class="back-link">
+        <m3e-icon slot="icon" name="arrow_back"></m3e-icon>
+        Back to Blogs
+    </m3e-button>
+
+    <header class="post-header">
+        <m3e-heading variant="display" size="small" emphasized level="1">{{ page.title }}</m3e-heading>
+        <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %d, %Y" }}</time>
+    </header>
+
+    <div class="prose">
+        {{ content }}
     </div>
-  </header>
-  <div class="post-content">
-    {{ content }}
-  </div>
 </article>

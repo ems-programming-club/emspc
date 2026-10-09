@@ -1,0 +1,131 @@
+---
+layout: default
+title: Projects
+description: Open-source projects built by the Earl Marriott Computer Science Club.
+---
+
+<m3e-heading variant="display" size="small" emphasized level="1" class="page-title">Projects</m3e-heading>
+
+<section class="section" aria-labelledby="projects-h">
+    <m3e-heading id="projects-h" variant="headline" size="medium" level="2">What We're Building</m3e-heading>
+    <p class="section-intro">
+        Everything the club makes is open source. Here's a live look at our
+        <a href="https://github.com/ems-programming-club" target="_blank" rel="noopener">GitHub organisation</a>.
+    </p>
+
+    <div id="repo-status" class="projects-status" role="status" aria-live="polite">
+        <m3e-loading-indicator indeterminate></m3e-loading-indicator>
+        <span id="repo-status-text">Loading repositories&hellip;</span>
+    </div>
+
+    <div id="repo-grid" class="repo-grid" hidden></div>
+
+    <div class="hero-actions">
+        <m3e-button variant="tonal" href="https://github.com/ems-programming-club" target="_blank" rel="noopener">
+            <m3e-icon slot="icon" name="open_in_new"></m3e-icon>
+            View all on GitHub
+        </m3e-button>
+    </div>
+</section>
+
+<script>
+    (function () {
+        "use strict";
+
+        var ORG = "ems-programming-club";
+        var API = "https://api.github.com/users/" + ORG + "/repos?per_page=100&sort=updated";
+        var CACHE_KEY = "emspc-repos";
+        var TTL = 15 * 60 * 1000;
+
+        var status = document.getElementById("repo-status");
+        var statusText = document.getElementById("repo-status-text");
+        var grid = document.getElementById("repo-grid");
+
+        function esc(value) {
+            return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
+                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+            });
+        }
+
+        function formatDate(iso) {
+            try {
+                return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+            } catch (e) { return ""; }
+        }
+
+        function chip(icon, text) {
+            return '<m3e-chip><m3e-icon slot="icon" name="' + icon + '"></m3e-icon>' + esc(text) + "</m3e-chip>";
+        }
+
+        function render(repos) {
+            if (!repos.length) {
+                statusText.textContent = "No public repositories yet — check back soon!";
+                return;
+            }
+
+            repos.sort(function (a, b) {
+                if (b.stargazers_count !== a.stargazers_count) return b.stargazers_count - a.stargazers_count;
+                return new Date(b.pushed_at) - new Date(a.pushed_at);
+            });
+
+            grid.innerHTML = repos.map(function (r) {
+                var name = esc(r.name);
+                var url = esc(r.html_url);
+                var desc = r.description ? esc(r.description) : "No description provided.";
+                var meta = "";
+                if (r.language) meta += chip("code", r.language);
+                meta += chip("star", r.stargazers_count);
+                meta += chip("fork_right", r.forks_count);
+                if (r.pushed_at) meta += chip("update", formatDate(r.pushed_at));
+
+                return '' +
+                    '<m3e-card variant="outlined" class="repo-card">' +
+                        '<div slot="header" class="repo-head">' +
+                            '<m3e-icon name="folder_code" class="repo-icon"></m3e-icon>' +
+                            '<a class="repo-name" href="' + url + '" target="_blank" rel="noopener">' + name + '</a>' +
+                        '</div>' +
+                        '<div slot="content">' +
+                            '<p class="repo-desc">' + desc + '</p>' +
+                            '<div class="repo-meta">' + meta + '</div>' +
+                        '</div>' +
+                        '<div slot="actions">' +
+                            '<m3e-button variant="text" href="' + url + '" target="_blank" rel="noopener">' +
+                                '<m3e-icon slot="icon" name="code"></m3e-icon>View repository' +
+                            '</m3e-button>' +
+                        '</div>' +
+                    '</m3e-card>';
+            }).join("");
+
+            status.hidden = true;
+            grid.hidden = false;
+        }
+
+        function load() {
+            var cached = null;
+            try {
+                cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+            } catch (e) { cached = null; }
+
+            if (cached && cached.data && Date.now() - cached.t < TTL) {
+                render(cached.data);
+                return;
+            }
+
+            fetch(API, { headers: { Accept: "application/vnd.github+json" } })
+                .then(function (r) {
+                    if (!r.ok) throw new Error("GitHub API " + r.status);
+                    return r.json();
+                })
+                .then(function (repos) {
+                    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: repos })); } catch (e) {}
+                    render(repos);
+                })
+                .catch(function () {
+                    if (cached && cached.data) { render(cached.data); return; }
+                    statusText.textContent = "Couldn't load repositories right now. View them directly on GitHub.";
+                });
+        }
+
+        load();
+    })();
+</script>

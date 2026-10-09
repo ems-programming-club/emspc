@@ -2,119 +2,147 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} - EMS Programming Club</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>{% if page.title %}{{ page.title }} - EMS Programming Club{% else %}Earl Marriott Computer Science Club{% endif %}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    {% if page.noindex %}<meta name="robots" content="noindex">{% endif %}
+
+    <!-- Paint the right surface colour before the components load (no white flash in dark mode) -->
+    <style>
+        html { background: #f8f9ff; color-scheme: light dark; }
+        @media (prefers-color-scheme: dark) { html { background: #0d141b; } }
+        html[data-scheme="light"] { background: #f8f9ff; color-scheme: light; }
+        html[data-scheme="dark"] { background: #0d141b; color-scheme: dark; }
+        m3e-theme:not(:defined) { display: block; opacity: 0; }
+    </style>
+    <noscript><style>m3e-theme:not(:defined) { opacity: 1 !important; }</style></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap">
+    <link rel="stylesheet" href="/style.css?v={{ site.time | date: '%s' }}">
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#f8f9ff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0d141b" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+
+    <!-- Material 3 Expressive (bundled from @m3e/web, see m3e-build/) -->
+    <script type="module" src="/assets/m3e.js?v={{ site.time | date: '%s' }}"></script>
 </head>
 <body>
-    <div id="island">
-        <header>
-            <div class="gradient-text">
-                <img src="/earl-mariott-programming-club-logo.svg" alt="EMS Programming Club Logo" class="logo">
-                <h1>EMSPC</h1>
-            </div>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-menu" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-            <nav id="nav-menu">
-                <a href="/index.html" class="nav-link{% if page.url == '/' or page.url == '/index.html' %} active{% endif %}">Home</a>
-                <a href="/achievements.html" class="nav-link{% if page.url == '/achievements.html' %} active{% endif %}">Achievements</a>
-                <a href="/blogs.html" class="nav-link{% if page.url == '/blogs.html' %} active{% endif %}">Blogs</a>
-                <a href="/calendar.html" class="nav-link{% if page.url == '/calendar.html' %} active{% endif %}">Calendar</a>
-                <a href="#" class="nav-link">Projects</a>
-                <a href="/about.html" class="nav-link{% if page.url == '/about.html' %} active{% endif %}">About</a>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="nav-link rickroll-link" id="rickroll">Free V-Bucks!!!</a>
-                <a href="https://github.com/ems-programming-club" class="nav-link github-link" aria-label="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-                </a>
-                <button class="gear-btn" id="gear-btn" aria-label="Open settings panel" aria-expanded="false">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                </button>
-            </nav>
-        </header>
+<m3e-theme id="theme" color="#4492d8" variant="vibrant" scheme="auto" motion="expressive" strong-focus>
+    <a class="skip-link" href="#content">Skip to content</a>
 
-        {{ content }}
+    <m3e-drawer-container id="shell" class="app" start-mode="auto" start>
+        <!-- Side navigation -->
+        <nav slot="start" id="app-drawer" class="drawer" aria-label="Primary">
+            <a class="drawer-brand" href="/index.html">
+                <img src="/earl-mariott-programming-club-logo.svg" alt="" width="40" height="40">
+                <span class="drawer-brand-text">
+                    <span class="drawer-brand-title">EMSPC</span>
+                    <span class="drawer-brand-sub">Earl Marriott Programming Club</span>
+                </span>
+            </a>
 
-        <footer>
-            <p>&copy; 2026 Earl Marriott Computer Science Club. All rights reserved.</p>
-            <p>Follow our progress on GitHub: <a href="https://github.com/ems-programming-club/ems-programming-club.github.io">ems-programming-club.github.io</a></p>
-        </footer>
-    </div>
+            <m3e-list class="drawer-nav">
+                <m3e-list-action href="/index.html" class="drawer-item{% if page.url == '/' or page.url == '/index.html' %} is-active{% endif %}"{% if page.url == '/' or page.url == '/index.html' %} aria-current="page"{% endif %}>
+                    <m3e-icon slot="leading" name="home"></m3e-icon>Home
+                </m3e-list-action>
+                <m3e-list-action href="/achievements.html" class="drawer-item{% if page.url == '/achievements.html' %} is-active{% endif %}"{% if page.url == '/achievements.html' %} aria-current="page"{% endif %}>
+                    <m3e-icon slot="leading" name="trophy"></m3e-icon>Achievements
+                </m3e-list-action>
+                <m3e-list-action href="/blogs.html" class="drawer-item{% if page.url == '/blogs.html' or page.layout == 'post' %} is-active{% endif %}"{% if page.url == '/blogs.html' or page.layout == 'post' %} aria-current="page"{% endif %}>
+                    <m3e-icon slot="leading" name="article"></m3e-icon>Blogs
+                </m3e-list-action>
+                <m3e-list-action href="/calendar.html" class="drawer-item{% if page.url == '/calendar.html' %} is-active{% endif %}"{% if page.url == '/calendar.html' %} aria-current="page"{% endif %}>
+                    <m3e-icon slot="leading" name="calendar_month"></m3e-icon>Calendar
+                </m3e-list-action>
+                <m3e-list-action href="/projects.html" class="drawer-item{% if page.url == '/projects.html' %} is-active{% endif %}"{% if page.url == '/projects.html' %} aria-current="page"{% endif %}>
+                    <m3e-icon slot="leading" name="folder_code"></m3e-icon>Projects
+                </m3e-list-action>
+                <m3e-list-action id="nav-admin" href="/admin.html" class="drawer-item{% if page.url == '/admin.html' %} is-active{% endif %}" hidden>
+                    <m3e-icon slot="leading" name="person"></m3e-icon>Admin Portal
+                </m3e-list-action>
+                <m3e-list-action href="/about.html" class="drawer-item{% if page.url == '/about.html' %} is-active{% endif %}"{% if page.url == '/about.html' %} aria-current="page"{% endif %}>
+                    <m3e-icon slot="leading" name="info"></m3e-icon>About
+                </m3e-list-action>
+            </m3e-list>
 
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
+            <div class="drawer-spacer"></div>
 
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            // Animate hamburger bars
-            const bars = document.querySelectorAll('.hamburger .bar');
-            bars.forEach(bar => {
-                bar.classList.toggle('active');
-            });
-            // Toggle aria-expanded
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-        });
+            <footer class="drawer-foot">
+                <!-- An ode to our friend Connor: the legendary Free V-Bucks button lives
+                     on here in spirit (and in the source) forever. Never forget.
+                <m3e-button id="vbucks" class="drawer-vbucks" variant="tertiary-container" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                    <m3e-icon slot="icon" name="redeem"></m3e-icon>
+                    Free V-Bucks!!!
+                </m3e-button>
+                -->
+                <div class="drawer-actions">
+                    <m3e-icon-button href="/settings.html"{% if page.url == '/settings.html' %} variant="filled"{% endif %} aria-label="Settings" title="Settings">
+                        <m3e-icon name="settings"></m3e-icon>
+                    </m3e-icon-button>
+                </div>
+                <!-- THIS IS THE LEGACY OF THE GREAT CONNOR MERRIN (aka Merlin) AND IS TO BE PRESERVED IN THIS SITE UNTIL THE END OF TIME -->
+            </footer>
+        </nav>
 
-        // Close menu when a link is clicked
-        document.querySelectorAll('#nav-menu .nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                document.querySelectorAll('.hamburger .bar').forEach(bar => {
-                    bar.classList.remove('active');
-                });
-                // Set aria-expanded to false when closing
-                hamburger.setAttribute('aria-expanded', 'false');
-            });
-        });
+        <!-- Main content -->
+        <div class="scroller" id="scroller">
+            <m3e-app-bar for="scroller" class="app-bar">
+                <m3e-icon-button slot="leading" class="drawer-toggle" toggle selected aria-label="Show or hide navigation">
+                    <m3e-drawer-toggle for="app-drawer"></m3e-drawer-toggle>
+                    <m3e-icon name="menu"></m3e-icon>
+                    <m3e-icon slot="selected" name="menu_open"></m3e-icon>
+                </m3e-icon-button>
+                <span slot="title">EMSPC</span>
+                <span slot="subtitle">Earl Marriott Programming Club</span>
+            </m3e-app-bar>
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-                document.querySelectorAll('.hamburger .bar').forEach(bar => {
-                    bar.classList.remove('active');
-                });
-                // Set aria-expanded to false when closing
-                hamburger.setAttribute('aria-expanded', 'false');
+            <main id="content" class="page">
+                {{ content }}
+            </main>
+
+            <footer class="site-footer">
+                <p>&copy; 2026 Earl Marriott Computer Science Club. All rights reserved.</p>
+                <p>Follow our progress on GitHub: <a href="https://github.com/ems-programming-club/ems-programming-club.github.io">ems-programming-club.github.io</a></p>
+            </footer>
+        </div>
+    </m3e-drawer-container>
+</m3e-theme>
+
+<!-- Apply a saved colour scheme/preset before the components upgrade (classic script runs first) -->
+<script>
+    try {
+        var p = localStorage.getItem("emspc-preset");
+        if (p && p !== "default") {
+            document.documentElement.setAttribute("data-preset", p);
+            var themeEl = document.getElementById("theme");
+            themeEl.setAttribute("data-preset", p);
+            var scheme = p === "latte" ? "light" : "dark";
+            document.documentElement.setAttribute("data-scheme", scheme);
+            themeEl.setAttribute("scheme", scheme);
+        } else {
+            var s = localStorage.getItem("emspc-scheme");
+            if (s === "light" || s === "dark") {
+                document.documentElement.setAttribute("data-scheme", s);
+                document.getElementById("theme").setAttribute("scheme", s);
             }
-        });
-
-        // Close menu when pressing Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                navMenu.classList.remove('active');
-                document.querySelectorAll('.hamburger .bar').forEach(bar => {
-                    bar.classList.remove('active');
-                });
-                // Set aria-expanded to false when closing
-                hamburger.setAttribute('aria-expanded', 'false');
-            }
-        });
-    </script>
-
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/service-worker.js")
-                    .then((reg) => console.log("Service worker registered:", reg.scope))
-                    .catch((err) => console.error("Service worker registration failed:", err));
-            });
         }
-    </script>
-    <script src="/settings-panel.js"></script>
-    <script type="module" src="/firebase-notifications.js"></script>
+    } catch (e) {}
+</script>
+<script src="/assets/site.js?v={{ site.time | date: '%s' }}" defer></script>
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("/service-worker.js")
+                .then((reg) => console.log("Service worker registered:", reg.scope))
+                .catch((err) => console.error("Service worker registration failed:", err));
+        });
+    }
+</script>
+<script type="module" src="/firebase-notifications.js"></script>
 </body>
 </html>

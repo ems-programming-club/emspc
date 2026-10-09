@@ -1,6 +1,6 @@
 title: EMS Programming Club
 description: A club for students interested in computer science and programming.
-url: "https://ems-programming-club.github.io"
+url: "https://emspc.vercel.app"
 baseurl: "" # for user/site repository, leave empty
 timezone: UTC
 theme: null # we are using our own CSS and layout
@@ -18,3 +18,4 @@ exclude:
   - .git
   - .github
   - vercel.json
+  - m3e-build

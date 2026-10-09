@@ -3,12 +3,13 @@ layout: default
 title: Calendar
 ---
 
-<main>
-  <h2 class="page-title">Upcoming Meetings</h2>
+<m3e-heading variant="display" size="small" emphasized level="1" class="page-title">Upcoming Meetings</m3e-heading>
 
-  <div id="calendar-status" class="calendar-status">Loading events…</div>
-  <div id="calendar-list" class="calendar-list"></div>
-</main>
+<div id="calendar-status" class="calendar-status" role="status" aria-live="polite">
+    <m3e-loading-indicator variant="contained"></m3e-loading-indicator>
+    <span>Loading events…</span>
+</div>
+<div id="calendar-list" class="stack"></div>
 
 <script>
 (function () {
@@ -31,22 +32,42 @@ title: Calendar
     .then((data) => {
       const events = data.items || [];
       if (events.length === 0) {
-        statusEl.textContent = "No upcoming meetings scheduled.";
+        showMessage("event_busy", "No upcoming meetings scheduled.");
         return;
       }
       statusEl.remove();
-      events.forEach((event) => {
-        listEl.appendChild(renderEvent(event));
+      events.forEach((event, i) => {
+        listEl.appendChild(renderEvent(event, i === 0));
       });
     })
     .catch((err) => {
       console.error("Calendar fetch error:", err);
-      statusEl.textContent = "Couldn't load the calendar right now.";
+      showMessage("cloud_off", "Couldn't load the calendar right now.");
     });
 
-  function renderEvent(event) {
-    const card = document.createElement("article");
-    card.className = "calendar-card";
+  // Swap the loading spinner for an icon + message (empty / error states)
+  function showMessage(iconName, text) {
+    statusEl.classList.add("calendar-status-empty");
+    statusEl.replaceChildren(el("m3e-icon", { name: iconName }), el("span", {}, text));
+  }
+
+  function el(tag, attrs, text) {
+    const node = document.createElement(tag);
+    Object.keys(attrs || {}).forEach((k) => node.setAttribute(k, attrs[k]));
+    if (text) node.textContent = text;
+    return node;
+  }
+
+  function chip(iconName, text) {
+    const c = el("m3e-chip");
+    c.appendChild(el("m3e-icon", { slot: "icon", name: iconName }));
+    c.appendChild(document.createTextNode(text));
+    return c;
+  }
+
+  function renderEvent(event, isNext) {
+    const card = el("m3e-card", { variant: isNext ? "filled" : "elevated" });
+    card.className = "event-card" + (isNext ? " event-next" : "");
 
     const startRaw = event.start.dateTime || event.start.date;
     const isAllDay = !event.start.dateTime;
@@ -61,20 +82,19 @@ title: Calendar
       ? "All day"
       : start.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 
-    card.innerHTML = `
-      <div class="calendar-date">${dateStr}</div>
-      <h3 class="calendar-title">${escapeHtml(event.summary || "Untitled event")}</h3>
-      <div class="calendar-time">${timeStr}</div>
-      ${event.location ? `<div class="calendar-location">📍 ${escapeHtml(event.location)}</div>` : ""}
-      ${event.description ? `<p class="calendar-desc">${escapeHtml(event.description)}</p>` : ""}
-    `;
-    return card;
-  }
+    const body = el("div", { slot: "content" });
+    body.appendChild(el("span", { class: "event-date" }, isNext ? "Next up · " + dateStr : dateStr));
+    body.appendChild(el("m3e-heading", { variant: "headline", size: "small", level: "2" }, event.summary || "Untitled event"));
 
-  function escapeHtml(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
+    const chips = el("m3e-chip-set", { role: "group", "aria-label": "Event details" });
+    chips.appendChild(chip("schedule", timeStr));
+    if (event.location) chips.appendChild(chip("location_on", event.location));
+    body.appendChild(chips);
+
+    if (event.description) body.appendChild(el("p", { class: "event-desc" }, event.description));
+
+    card.appendChild(body);
+    return card;
   }
 })();
 </script>

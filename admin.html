@@ -1,78 +1,155 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
-  <title>EMSPC Admin</title>
-  <link rel="icon" type="image/svg+xml" href="earl-mariott-programming-club.svg">
-  <link rel="stylesheet" href="style.css">
-  <style>
-    main { max-width: 560px; margin: 3rem auto; padding: 0 1rem; display: grid; gap: .8rem; }
-    input, textarea, button { font: inherit; padding: .6rem; border-radius: 8px; }
-    label { display: inline-flex; gap: .3rem; margin-right: .8rem; }
-    pre { white-space: pre-wrap; }
-    [hidden] { display: none !important; }
-  </style>
-</head>
-<body>
-<main>
-  <img src="earl-mariott-programming-club.svg" alt="EMSPC logo" width="72" height="72" style="border-radius:12px">
-  <h1>EMSPC Admin</h1>
-  <section id="login" hidden>
-    <button id="loginBtn">Login with GitHub</button>
-  </section>
-  <section id="panel" hidden>
-    <p>Signed in as <b id="who"></b></p>
-    <input id="title" placeholder="Title" maxlength="100">
-    <textarea id="body" rows="5" placeholder="Announcement" maxlength="1000"></textarea>
-    <input id="img" placeholder="Image URL (blank = club logo)">
-    <div>
-      <label><input type="checkbox" value="push" checked> Push</label>
-      <label><input type="checkbox" value="discord" checked> Discord</label>
-      <label><input type="checkbox" value="telegram" checked> Telegram</label>
-      <label><input type="checkbox" value="instagram"> Instagram</label>
+---
+layout: default
+title: Admin Portal
+description: Staff-only announcement portal for the Earl Marriott Computer Science Club.
+noindex: true
+---
+
+<m3e-heading variant="display" size="small" emphasized level="1" class="page-title">Admin Portal</m3e-heading>
+
+<section class="section">
+    <div class="admin">
+        <m3e-card id="login" variant="filled" class="panel" hidden>
+            <div slot="content" class="admin-stack">
+                <div class="admin-head">
+                    <img src="/earl-mariott-programming-club.svg" alt="" width="56" height="56">
+                    <m3e-heading id="admin-h" variant="headline" size="small" level="2">Staff sign-in</m3e-heading>
+                </div>
+                <p>
+                    Sign in with the GitHub account that owns the
+                    <a href="https://github.com/ems-programming-club" target="_blank" rel="noopener">ems-programming-club</a>
+                    organisation. Only active organisation owners are granted access.
+                </p>
+                <m3e-button id="loginBtn" variant="filled" size="large">
+                    <m3e-icon slot="icon" name="login"></m3e-icon>
+                    Login with GitHub
+                </m3e-button>
+            </div>
+        </m3e-card>
+
+        <m3e-card id="panel" variant="elevated" class="panel" hidden>
+            <div slot="content" class="admin-stack">
+                <p class="who">
+                    <m3e-icon name="account_circle"></m3e-icon>
+                    <span>Signed in as <b id="who"></b> &middot; organisation owner</span>
+                </p>
+
+                <m3e-form-field>
+                    <label slot="label" for="title">Title</label>
+                    <input id="title" maxlength="100" autocomplete="off">
+                </m3e-form-field>
+
+                <m3e-form-field>
+                    <label slot="label" for="body">Announcement</label>
+                    <textarea id="body" rows="5" maxlength="1000"></textarea>
+                </m3e-form-field>
+
+                <m3e-form-field>
+                    <label slot="label" for="img">Image URL (blank = club logo)</label>
+                    <input id="img" type="url" autocomplete="off">
+                </m3e-form-field>
+
+                <fieldset class="channels">
+                    <legend>Send to</legend>
+                    <label><m3e-checkbox value="push" checked></m3e-checkbox> Push</label>
+                    <label><m3e-checkbox value="discord" checked></m3e-checkbox> Discord</label>
+                    <label><m3e-checkbox value="telegram" checked></m3e-checkbox> Telegram</label>
+                    <label><m3e-checkbox value="instagram"></m3e-checkbox> Instagram</label>
+                </fieldset>
+
+                <div class="send-row">
+                    <m3e-button id="send" variant="filled" size="large">
+                        <m3e-icon slot="icon" name="send"></m3e-icon>
+                        Send announcement
+                    </m3e-button>
+                    <m3e-loading-indicator id="sending" hidden></m3e-loading-indicator>
+                </div>
+
+                <ul id="out" class="results" aria-live="polite"></ul>
+            </div>
+        </m3e-card>
     </div>
-    <button id="send">Send announcement</button>
-    <pre id="out"></pre>
-  </section>
-</main>
+</section>
+
 <script>
-  const API = "https://emspc-portal.emspc.workers.dev"; // set after first deploy
-  const $ = (id) => document.getElementById(id);
+    (function () {
+        "use strict";
 
-  const m = location.hash.match(/t=([^&]+)/);
-  if (m) { sessionStorage.setItem("emspc_t", m[1]); history.replaceState(null, "", location.pathname); }
-  const tok = sessionStorage.getItem("emspc_t");
+        var API = "https://emspc-portal.emspc.workers.dev";
+        var $ = function (id) { return document.getElementById(id); };
 
-  $("loginBtn").onclick = () => (location.href = API + "/login?return=" + encodeURIComponent(location.origin));
+        // Capture the session token handed back by the portal worker (#t=...), then
+        // let site.js know so the sidebar/admin state stays in sync.
+        var m = location.hash.match(/t=([^&]+)/);
+        if (m) {
+            try { sessionStorage.setItem("emspc_t", m[1]); } catch (e) {}
+            history.replaceState(null, "", location.pathname + location.search);
+        }
+        var tok = null;
+        try { tok = sessionStorage.getItem("emspc_t"); } catch (e) {}
 
-  async function init() {
-    if (tok) {
-      const r = await fetch(API + "/me", { headers: { Authorization: "Bearer " + tok } }).catch(() => null);
-      if (r && r.ok) {
-        $("who").textContent = (await r.json()).user;
-        $("panel").hidden = false;
-        return;
-      }
-      sessionStorage.removeItem("emspc_t");
-    }
-    $("login").hidden = false;
-  }
+        $("loginBtn").onclick = function () {
+            location.href = API + "/login?return=" + encodeURIComponent(location.origin);
+        };
 
-  $("send").onclick = async () => {
-    const channels = [...document.querySelectorAll("#panel input[type=checkbox]:checked")].map((c) => c.value);
-    $("out").textContent = "sending...";
-    const r = await fetch(API + "/announce", {
-      method: "POST",
-      headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
-      body: JSON.stringify({ title: $("title").value, body: $("body").value, imageUrl: $("img").value || undefined, channels }),
-    });
-    const j = await r.json();
-    $("out").textContent = Object.entries(j).map(([k, v]) => (v === "ok" ? "✅ " : "❌ ") + k + (v === "ok" ? "" : ": " + v)).join("\n");
-  };
+        function addResult(ok, label, detail) {
+            var li = document.createElement("li");
+            li.className = ok ? "result ok" : "result fail";
+            var icon = document.createElement("m3e-icon");
+            icon.setAttribute("name", ok ? "check" : "close");
+            var text = document.createElement("span");
+            text.textContent = label + (detail ? ": " + detail : "");
+            li.append(icon, text);
+            $("out").appendChild(li);
+        }
 
-  init();
+        $("send").onclick = async function () {
+            var channels = Array.prototype.slice
+                .call(document.querySelectorAll("#panel m3e-checkbox"))
+                .filter(function (c) { return c.checked; })
+                .map(function (c) { return c.value; });
+            $("out").replaceChildren();
+            $("send").disabled = true;
+            $("sending").hidden = false;
+            try {
+                var r = await fetch(API + "/announce", {
+                    method: "POST",
+                    headers: { Authorization: "Bearer " + tok, "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        title: $("title").value,
+                        body: $("body").value,
+                        imageUrl: $("img").value || undefined,
+                        channels: channels,
+                    }),
+                });
+                var j = await r.json();
+                var entries = Object.entries(j);
+                entries.forEach(function (pair) { addResult(pair[1] === "ok", pair[0], pair[1] === "ok" ? "" : String(pair[1])); });
+                var failed = entries.filter(function (p) { return p[1] !== "ok"; }).length;
+                if (window.M3eSnackbar) {
+                    window.M3eSnackbar.open(failed ? failed + " channel(s) failed" : "Announcement sent", true);
+                }
+            } catch (err) {
+                addResult(false, "request", err.message);
+            } finally {
+                $("send").disabled = false;
+                $("sending").hidden = true;
+            }
+        };
+
+        (async function init() {
+            if (tok) {
+                var r = await fetch(API + "/me", { headers: { Authorization: "Bearer " + tok } }).catch(function () { return null; });
+                if (r && r.ok) {
+                    var data = await r.json();
+                    $("who").textContent = data.user;
+                    $("panel").hidden = false;
+                    $("login").hidden = true;
+                    return;
+                }
+                try { sessionStorage.removeItem("emspc_t"); } catch (e) {}
+            }
+            $("login").hidden = false;
+        })();
+    })();
 </script>
-</body>
-</html>

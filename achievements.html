@@ -1,150 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements - Earl Marriott Computer Science Club</title>
-    <link rel="stylesheet" href="style.css">
+---
+layout: default
+title: Achievements
+---
 
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0d1117">
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-</head>
-<body>
-    <div id="island">
-        <header>
-            <div class="gradient-text">
-                <img src="earl-mariott-programming-club-logo.svg" alt="EMS Programming Club Logo" class="logo">
-                <h1>EMSPC</h1>
-            </div>
-            <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-controls="nav-menu" aria-expanded="false">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-            <nav id="nav-menu">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="achievements.html" class="nav-link active">Achievements</a>
-                <a href="blogs.html" class="nav-link">Blogs</a>
-                <a href="calendar.html" class="nav-link">Calendar</a>
-                <a href="#" class="nav-link">Projects</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="nav-link rickroll-link" id="rickroll">Free V-Bucks!!!</a>
-                <a href="https://github.com/ems-programming-club" class="nav-link github-link" aria-label="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-                </a>
-                <button class="gear-btn" id="gear-btn" aria-label="Open settings panel" aria-expanded="false">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                    </svg>
-                </button>
-            </nav>
-            <div id="settings-panel" class="settings-panel" role="menu" aria-hidden="true">
-                <p class="settings-label">Settings</p>
-                <button id="notify-btn" class="notify-btn">Enable Notifications</button>
-            </div>
-        </header>
+<m3e-heading variant="display" size="small" emphasized level="1" class="page-title">Our Journey So Far</m3e-heading>
 
-        <main>
-            <h2 class="page-title">Our Journey So Far</h2>
+<div class="stack">
+    <m3e-card variant="filled" class="panel panel-primary">
+        <div slot="content">
+            <m3e-heading variant="headline" size="medium" level="2">What We've Been Doing</m3e-heading>
+            <p>In our short time together, we've focused on building our foundation:</p>
+            <m3e-list class="panel-list">
+                <m3e-list-item><m3e-icon slot="leading" name="check"></m3e-icon>Learning programming basics together (Python, JavaScript, and web development)</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="check"></m3e-icon>Setting up our club structure and meeting schedule</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="check"></m3e-icon>Creating this website as our first collaborative project</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="check"></m3e-icon>Exploring different areas of computer science to find our interests</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="check"></m3e-icon>Building teamwork and problem-solving skills</m3e-list-item>
+            </m3e-list>
+        </div>
+    </m3e-card>
 
-            <section class="achievement">
-                <h2>What We've Been Doing</h2>
-                <p>In our short time together, we've focused on building our foundation:</p>
-                <ul>
-                    <li>Learning programming basics together (Python, JavaScript, and web development)</li>
-                    <li>Setting up our club structure and meeting schedule</li>
-                    <li>Creating this website as our first collaborative project</li>
-                    <li>Exploring different areas of computer science to find our interests</li>
-                    <li>Building teamwork and problem-solving skills</li>
-                </ul>
-            </section>
-
-            <section class="achievement">
-                <h2>Our Goals for Next Year</h2>
-                <p>Now that we've established ourselves, we're excited to achieve great things in the upcoming school year:</p>
-                <ul>
-                    <li>Participate in local and regional programming competitions</li>
-                    <li>Develop and showcase our own software projects</li>
-                    <li>Host coding workshops for fellow students</li>
-                    <li>Collaborate with other school clubs on tech-related initiatives</li>
-                    <li>Earn our first awards and recognitions as a club</li>
-                </ul>
-                <p>Stay tuned—our best work is still ahead!</p>
-            </section>
-        </main>
-
-        <footer>
-            <p>&copy; 2026 Earl Marriott Computer Science Club. All rights reserved.</p>
-            <p>Follow our progress on GitHub: <a href="https://github.com/ems-programming-club/ems-programming-club.github.io">ems-programming-club.github.io</a></p>
-        </footer>
-    </div>
-    <script>
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('nav-menu');
-
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            // Animate hamburger bars
-            const bars = document.querySelectorAll('.hamburger .bar');
-            bars.forEach(bar => {
-                bar.classList.toggle('active');
-            });
-            // Toggle aria-expanded
-            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true' || false;
-            hamburger.setAttribute('aria-expanded', !isExpanded);
-        });
-
-        // Close menu when a link is clicked
-        document.querySelectorAll('#nav-menu .nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                document.querySelectorAll('.hamburger .bar').forEach(bar => {
-                    bar.classList.remove('active');
-                });
-                // Set aria-expanded to false when closing
-                hamburger.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-                document.querySelectorAll('.hamburger .bar').forEach(bar => {
-                    bar.classList.remove('active');
-                });
-                // Set aria-expanded to false when closing
-                hamburger.setAttribute('aria-expanded', 'false');
-            }
-        });
-
-        // Close menu when pressing Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                navMenu.classList.remove('active');
-                document.querySelectorAll('.hamburger .bar').forEach(bar => {
-                    bar.classList.remove('active');
-                });
-                // Set aria-expanded to false when closing
-                hamburger.setAttribute('aria-expanded', 'false');
-            }
-        });
-    </script>
-
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/service-worker.js")
-                    .then((reg) => console.log("Service worker registered:", reg.scope))
-                    .catch((err) => console.error("Service worker registration failed:", err));
-            });
-        }
-    </script>
-    <script src="settings-panel.js"></script>
-    <script type="module" src="firebase-notifications.js"></script>
-</body>
-</html>
+    <m3e-card variant="filled" class="panel panel-tertiary">
+        <div slot="content">
+            <m3e-heading variant="headline" size="medium" level="2">Our Goals for Next Year</m3e-heading>
+            <p>Now that we've established ourselves, we're excited to achieve great things in the upcoming school year:</p>
+            <m3e-list class="panel-list">
+                <m3e-list-item><m3e-icon slot="leading" name="rocket_launch"></m3e-icon>Participate in local and regional programming competitions</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="rocket_launch"></m3e-icon>Develop and showcase our own software projects</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="rocket_launch"></m3e-icon>Host coding workshops for fellow students</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="rocket_launch"></m3e-icon>Collaborate with other school clubs on tech-related initiatives</m3e-list-item>
+                <m3e-list-item><m3e-icon slot="leading" name="rocket_launch"></m3e-icon>Earn our first awards and recognitions as a club</m3e-list-item>
+            </m3e-list>
+            <p class="kicker">Stay tuned—our best work is still ahead!</p>
+        </div>
+    </m3e-card>
+</div>

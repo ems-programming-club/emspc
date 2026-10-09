@@ -14,22 +14,40 @@ const VAPID_KEY = "BJy9-3lYbONud5DEa1_Ga6EF58UGeickptqia54AdS-JQzKHHKZs41GwLBY50
 const PORTAL_API = "https://emspc-portal.emspc.workers.dev"; // set after first deploy
 
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+// getMessaging throws in browsers without push support (e.g. iOS Safari outside an installed PWA)
+let messaging = null;
+try {
+  messaging = getMessaging(app);
+} catch (err) {
+  console.warn("Firebase Messaging unavailable:", err);
+}
 
-const notifyBtn = document.getElementById("notify-btn");
+const notifySwitch = document.getElementById("notify-switch");
+const notifyStatus = document.getElementById("notify-status");
+const pushSupported = !!messaging && "Notification" in window && "serviceWorker" in navigator;
 
-function updateButtonState() {
-  if (!notifyBtn) return;
-  if (Notification.permission === "granted") {
-    notifyBtn.textContent = "Notifications On";
-    notifyBtn.classList.add("active");
-    notifyBtn.disabled = true;
+function setStatus(text) {
+  if (notifyStatus) notifyStatus.textContent = text;
+}
+
+function updateSwitchState() {
+  if (!notifySwitch) return;
+  if (!pushSupported) {
+    notifySwitch.checked = false;
+    notifySwitch.disabled = true;
+    setStatus("Push notifications aren't supported in this browser.");
+  } else if (Notification.permission === "granted") {
+    notifySwitch.checked = true;
+    notifySwitch.disabled = true;
+    setStatus("Notifications are on for this device. To turn them off, change this site's permission in your browser.");
   } else if (Notification.permission === "denied") {
-    notifyBtn.textContent = "Notifications Blocked";
-    notifyBtn.disabled = true;
+    notifySwitch.checked = false;
+    notifySwitch.disabled = true;
+    setStatus("Blocked in your browser settings. Allow notifications for this site to turn them on.");
   } else {
-    notifyBtn.textContent = "Enable Notifications";
-    notifyBtn.disabled = false;
+    notifySwitch.checked = false;
+    notifySwitch.disabled = false;
+    setStatus("Get club announcements on this device.");
   }
 }
 
@@ -73,28 +91,33 @@ async function subscribeDevice() {
 }
 
 async function enableNotifications() {
-  if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+  if (!pushSupported) {
     console.warn("Push notifications not supported in this browser.");
+    updateSwitchState();
     return;
   }
 
   try {
     const permission = await Notification.requestPermission();
-    updateButtonState();
+    updateSwitchState();
     if (permission !== "granted") return;
     await subscribeDevice();
+    if (window.M3eSnackbar) window.M3eSnackbar.open("Notifications enabled");
   } catch (err) {
     console.error("Error enabling notifications:", err);
+    updateSwitchState();
   }
 }
 
-if (notifyBtn) {
-  notifyBtn.addEventListener("click", enableNotifications);
-  updateButtonState();
+if (notifySwitch) {
+  notifySwitch.addEventListener("change", () => {
+    if (notifySwitch.checked) enableNotifications();
+  });
+  updateSwitchState();
 }
 
 // Handle messages received while the site is open/foreground
-onMessage(messaging, (payload) => {
+if (messaging) onMessage(messaging, (payload) => {
   const title = payload.notification?.title || "EMS CS Club";
   const body = payload.notification?.body || "";
   if (Notification.permission === "granted") {
@@ -103,6 +126,6 @@ onMessage(messaging, (payload) => {
 });
 
 // Permission was already granted on an earlier visit: make sure this device is subscribed
-if ("Notification" in window && "serviceWorker" in navigator && Notification.permission === "granted") {
+if (pushSupported && Notification.permission === "granted") {
   subscribeDevice().catch((err) => console.error("Re-subscribe failed:", err));
 }

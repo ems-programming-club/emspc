@@ -3,26 +3,24 @@ layout: default
 title: Blogs
 ---
 
-<main>
-  <h1 class="page-title">Blogs</h1>
+<m3e-heading variant="display" size="small" emphasized level="1" class="page-title">Blogs</m3e-heading>
 
-  <div class="posts-list">
+<div class="stack">
     {% for post in site.posts %}
-      <article class="post-preview">
-        <header class="post-header">
-          <h2 class="post-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-          <div class="post-meta">
-            <time datetime="{{ post.date }}">{{ post.date | date: "%B %d, %Y" }}</time>
-          </div>
-        </header>
-        <div class="post-excerpt">
-          {{ post.excerpt }}
+    <m3e-card variant="elevated" class="post-card">
+        <div slot="content">
+            <time class="post-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
+            <m3e-heading variant="headline" size="small" level="2">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </m3e-heading>
+            <div class="post-excerpt">{{ post.excerpt }}</div>
         </div>
-        <a href="{{ post.url | relative_url }}" class="read-more">Read more →</a>
-      </article>
-      {% unless forloop.last %}
-      <hr>
-      {% endunless %}
+        <div slot="actions">
+            <m3e-button variant="tonal" href="{{ post.url | relative_url }}">
+                Read more
+                <m3e-icon slot="trailing-icon" name="arrow_forward"></m3e-icon>
+            </m3e-button>
+        </div>
+    </m3e-card>
     {% endfor %}
-  </div>
-</main>
+</div>
