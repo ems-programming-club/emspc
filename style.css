@@ -88,10 +88,18 @@ a { color: var(--md-sys-color-primary); }
 }
 .app-bar-brand img {
     flex: none;
+    width: 38px;
+    height: 38px;
     border-radius: var(--md-sys-shape-corner-medium, 12px);
     transition: border-radius var(--md-sys-motion-duration-medium-2, 300ms) var(--md-sys-motion-easing-emphasized, ease);
 }
 .app-bar-brand:hover img { border-radius: var(--md-sys-shape-corner-full, 50%); }
+.app-bar-brand span {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+}
 
 .page {
     flex: 1 0 auto;
@@ -134,8 +142,8 @@ a { color: var(--md-sys-color-primary); }
 /* ID selector beats the component's ::slotted width/height. */
 #app-drawer {
     width: 352px;
-    height: calc(100% - 24px);
-    margin: 12px;
+    height: calc(100% - 12px);
+    margin: 0 12px 12px;
     box-sizing: border-box;
 }
 
