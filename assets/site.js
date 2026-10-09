@@ -138,6 +138,27 @@
         applyAccent();
     }
 
+    // ---- Drawer default state ----
+    // The container auto-switches its behaviour by width: `side` on wide
+    // ("web") viewports, `push`/`over` below. We drive the open state so the
+    // drawer is expanded by default on web and collapsed by default on mobile,
+    // including when the viewport crosses the 960px boundary (the container
+    // only closes on shrink itself, never reopens).
+    var shellEl = document.getElementById("shell");
+    if (shellEl) {
+        var desktopQuery = window.matchMedia("(min-width: 960px)");
+        var wasDesktop = desktopQuery.matches;
+        function syncShell() {
+            var isDesktop = desktopQuery.matches;
+            if (isDesktop === wasDesktop) return;
+            wasDesktop = isDesktop;
+            shellEl.start = isDesktop;
+            shellEl.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+        if (desktopQuery.addEventListener) desktopQuery.addEventListener("change", syncShell);
+        else if (desktopQuery.addListener) desktopQuery.addListener(syncShell);
+    }
+
     // ---- Admin portal link ----
     // The sign-in flow lives on admin.html now; here we just mirror the session
     // token it hands back (#t=...) and pin the sidebar entry from the toggle.
