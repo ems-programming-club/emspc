@@ -52,22 +52,30 @@ a { color: var(--md-sys-color-primary); }
 .skip-link:focus { transform: none; }
 
 /* ---------- App shell ---------- */
-.app { height: 100dvh; }
+.shell-root {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+}
+
+.topbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    z-index: 4;
+}
+
+.app { flex: 1 1 auto; height: auto; min-height: 0; }
 
 .scroller {
     height: 100%;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    scroll-padding-top: 80px;
-}
-
-.app-bar {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    --m3e-app-bar-container-color: var(--md-sys-color-surface);
-    --m3e-app-bar-container-color-on-scroll: var(--md-sys-color-surface-container);
 }
 
 .app-bar-brand {

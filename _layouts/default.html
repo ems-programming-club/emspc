@@ -35,6 +35,19 @@
 <m3e-theme id="theme" color="#4492d8" variant="vibrant" scheme="auto" motion="expressive" strong-focus>
     <a class="skip-link" href="#content">Skip to content</a>
 
+    <div class="shell-root">
+    <header class="topbar">
+        <m3e-icon-button class="drawer-toggle" toggle selected aria-label="Show or hide navigation">
+            <m3e-drawer-toggle for="app-drawer"></m3e-drawer-toggle>
+            <m3e-icon name="menu"></m3e-icon>
+            <m3e-icon slot="selected" name="menu_open"></m3e-icon>
+        </m3e-icon-button>
+        <a class="app-bar-brand" href="/index.html">
+            <img src="/earl-mariott-programming-club-logo.svg" alt="" width="30" height="30">
+            <span>Earl Marriott Programming Club</span>
+        </a>
+    </header>
+
     <m3e-drawer-container id="shell" class="app" start-mode="auto" start>
         <!-- Side navigation -->
         <nav slot="start" id="app-drawer" class="drawer" aria-label="Primary">
@@ -89,19 +102,6 @@
 
         <!-- Main content -->
         <div class="scroller" id="scroller">
-            <m3e-app-bar for="scroller" class="app-bar">
-                <m3e-icon-button slot="leading" class="drawer-toggle" toggle selected aria-label="Show or hide navigation">
-                    <m3e-drawer-toggle for="app-drawer"></m3e-drawer-toggle>
-                    <m3e-icon name="menu"></m3e-icon>
-                    <m3e-icon slot="selected" name="menu_open"></m3e-icon>
-                </m3e-icon-button>
-                <a slot="title" class="app-bar-brand" href="/index.html">
-                    <img src="/earl-mariott-programming-club-logo.svg" alt="" width="30" height="30">
-                    <span>EMSPC</span>
-                </a>
-                <span slot="subtitle">Earl Marriott Programming Club</span>
-            </m3e-app-bar>
-
             <main id="content" class="page">
                 {{ content }}
             </main>
@@ -112,6 +112,7 @@
             </footer>
         </div>
     </m3e-drawer-container>
+    </div>
 </m3e-theme>
 
 <!-- Apply a saved colour scheme/preset before the components upgrade (classic script runs first) -->
