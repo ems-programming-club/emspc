@@ -38,14 +38,6 @@
     <m3e-drawer-container id="shell" class="app" start-mode="auto" start>
         <!-- Side navigation -->
         <nav slot="start" id="app-drawer" class="drawer" aria-label="Primary">
-            <a class="drawer-brand" href="/index.html">
-                <img src="/earl-mariott-programming-club-logo.svg" alt="" width="40" height="40">
-                <span class="drawer-brand-text">
-                    <span class="drawer-brand-title">EMSPC</span>
-                    <span class="drawer-brand-sub">Earl Marriott Programming Club</span>
-                </span>
-            </a>
-
             <m3e-list class="drawer-nav">
                 <m3e-list-action href="/index.html" class="drawer-item{% if page.url == '/' or page.url == '/index.html' %} is-active{% endif %}"{% if page.url == '/' or page.url == '/index.html' %} aria-current="page"{% endif %}>
                     <m3e-icon slot="leading" name="home"></m3e-icon>Home
@@ -81,6 +73,12 @@
                 </m3e-button>
                 -->
                 <div class="drawer-actions">
+                    <m3e-button class="drawer-github" variant="tonal" href="https://github.com/ems-programming-club" target="_blank" rel="noopener">
+                        <svg slot="icon" class="drawer-github-icon" viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                        </svg>
+                        GitHub
+                    </m3e-button>
                     <m3e-icon-button href="/settings.html"{% if page.url == '/settings.html' %} variant="filled"{% endif %} aria-label="Settings" title="Settings">
                         <m3e-icon name="settings"></m3e-icon>
                     </m3e-icon-button>
@@ -97,7 +95,10 @@
                     <m3e-icon name="menu"></m3e-icon>
                     <m3e-icon slot="selected" name="menu_open"></m3e-icon>
                 </m3e-icon-button>
-                <span slot="title">EMSPC</span>
+                <a slot="title" class="app-bar-brand" href="/index.html">
+                    <img src="/earl-mariott-programming-club-logo.svg" alt="" width="30" height="30">
+                    <span>EMSPC</span>
+                </a>
                 <span slot="subtitle">Earl Marriott Programming Club</span>
             </m3e-app-bar>
 
