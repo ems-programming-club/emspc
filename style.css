@@ -81,6 +81,7 @@ a { color: var(--md-sys-color-primary); }
 .app-bar-brand {
     display: inline-flex;
     align-items: center;
+    flex: 0 1 auto;
     gap: 10px;
     min-width: 0;
     color: inherit;
@@ -95,10 +96,16 @@ a { color: var(--md-sys-color-primary); }
 }
 .app-bar-brand:hover img { border-radius: var(--md-sys-shape-corner-full, 50%); }
 .app-bar-brand span {
+    min-width: 0;
+    overflow: hidden;
     font-size: 1.2rem;
     font-weight: 500;
     line-height: 1.2;
+    text-overflow: ellipsis;
     white-space: nowrap;
+}
+@media (max-width: 480px) {
+    .app-bar-brand span { font-size: 1rem; }
 }
 
 .page {
@@ -141,7 +148,8 @@ a { color: var(--md-sys-color-primary); }
 }
 /* ID selector beats the component's ::slotted width/height. */
 #app-drawer {
-    width: 352px;
+    width: 376px;
+    max-width: calc(100vw - 24px);
     height: calc(100% - 12px);
     margin: 0 12px 12px;
     box-sizing: border-box;
