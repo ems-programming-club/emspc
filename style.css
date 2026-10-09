@@ -69,13 +69,6 @@ a { color: var(--md-sys-color-primary); }
     z-index: 4;
 }
 
-.topbar-sep {
-    flex: none;
-    align-self: center;
-    width: 1px;
-    height: 24px;
-    background: var(--md-sys-color-outline-variant);
-}
 
 .app { flex: 1 1 auto; height: auto; min-height: 0; }
 
