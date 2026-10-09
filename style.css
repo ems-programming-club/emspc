@@ -148,7 +148,7 @@ a { color: var(--md-sys-color-primary); }
 }
 /* ID selector beats the component's ::slotted width/height. */
 #app-drawer {
-    width: 376px;
+    width: 384px;
     max-width: calc(100vw - 24px);
     height: calc(100% - 12px);
     margin: 0 12px 12px;
