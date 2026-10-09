@@ -10,15 +10,15 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/earl-mariott-programming-club-logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/earl-mariott-programming-club-PWA.png",
+      "sizes": "300x300",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/earl-mariott-programming-club-logo.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/earl-mariott-programming-club-PWA.png",
+      "sizes": "300x300",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ]
