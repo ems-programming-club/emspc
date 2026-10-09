@@ -1,4 +1,4 @@
-const CACHE_NAME = "ems-cs-club-v10";
+const CACHE_NAME = "ems-cs-club-v11";
 const PRECACHE_URLS = [
   "/",
   "/index.html",
@@ -10,8 +10,7 @@ const PRECACHE_URLS = [
   "/assets/m3e.js",
   "/assets/site.js",
   "/manifest.json",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png"
+  "/earl-mariott-programming-club-logo.svg"
 ];
 
 // Install: pre-cache core files
