@@ -117,6 +117,15 @@ a { color: var(--md-sys-color-primary); }
     padding: 24px 24px 10px 24px;
 }
 
+.site-footer {
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 24px 24px 40px;
+    text-align: center;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
 .ussr-egg {
     background: none;
     border: none;
@@ -130,7 +139,7 @@ a { color: var(--md-sys-color-primary); }
     outline: 2px solid var(--md-sys-color-primary);
     outline-offset: 2px;
 }
-.site-footer p { margin: 0 0 4px; font-size: inherit; line-height: 1.5; }
+.site-footer p { margin: 0; font-size: inherit; line-height: 1.5; }
 .site-footer .sep { margin: 0 8px; color: var(--md-sys-color-on-surface-variant); opacity: 0.7; }
 
 /* ---------- Navigation drawer ---------- */
