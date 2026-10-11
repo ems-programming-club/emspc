@@ -99,8 +99,14 @@
       var logins = contribs.map(function (c) { return c.login; }).filter(Boolean);
       var details = await fetchUserDetails(logins);
       var merged = dedupe(details);
-      saveToCache(merged);
-      render(merged);
+      var botRe = /(\[bot\]|-bot|^claude$|^dependabot|^github-actions|^renovate|^ems-programming)/i;
+      var filtered = merged.filter(function (u) {
+        if (u.type === "Bot") return false;
+        if (botRe.test(u.login)) return false;
+        return true;
+      });
+      saveToCache(filtered);
+      render(filtered);
     } catch (e) {}
   }
 
