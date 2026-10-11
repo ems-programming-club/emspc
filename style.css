@@ -157,7 +157,7 @@ a { color: var(--md-sys-color-primary); }
     width: 368px;
     max-width: calc(100vw - 24px);
     height: calc(100% - 12px);
-    margin: 0 12px 12px 8px;
+    margin: 0 12px 12px 0;
     box-sizing: border-box;
 }
 
