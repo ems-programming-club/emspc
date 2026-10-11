@@ -117,13 +117,18 @@ a { color: var(--md-sys-color-primary); }
     padding: 24px 24px 10px 24px;
 }
 
-.site-footer {
-    width: 100%;
-    max-width: var(--page-max);
-    margin: 0 auto;
-    padding: 24px 16px 40px;
-    color: var(--md-sys-color-on-surface-variant);
-    font-size: var(--md-sys-typescale-body-medium-font-size, 0.875rem);
+.ussr-egg {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: var(--md-sys-shape-corner-small, 4px);
+}
+.ussr-egg:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
 }
 .site-footer p { margin: 0 0 4px; font-size: inherit; line-height: 1.5; }
 
@@ -716,4 +721,18 @@ html[data-accent], m3e-theme[data-accent] {
     --md-sys-color-tertiary-fixed-dim: color-mix(in srgb, var(--accent) 48%, var(--ctp-base));
     --md-sys-color-on-tertiary-fixed: var(--ctp-base);
     --md-sys-color-on-tertiary-fixed-variant: color-mix(in srgb, var(--accent) 72%, var(--ctp-base));
+}
+
+.ussr-egg {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: var(--md-sys-shape-corner-small, 4px);
+}
+.ussr-egg:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
 }
