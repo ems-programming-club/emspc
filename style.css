@@ -193,7 +193,7 @@ a { color: var(--md-sys-color-primary); }
 .drawer-vbucks { width: 100%; }
 
 /* ---------- Page headings ---------- */
-.page-title { display: block; margin: 8px 0 24px; }
+.page-title { display: block; margin: 0 0 24px; }
 .page-note {
     margin: -12px 0 24px;
     color: var(--md-sys-color-on-surface-variant);
