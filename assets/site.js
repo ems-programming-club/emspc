@@ -185,7 +185,7 @@
         adminSwitch.addEventListener("change", function () {
             write(ADMIN_LINK_KEY, adminSwitch.checked ? "1" : "0");
             if (adminSwitch.checked && window.M3eSnackbar) {
-                window.M3eSnackbar.open("Only authorized users can access Announcements.", true);
+                window.M3eSnackbar.open("Only authorized users can access Admin Portal.", true);
             }
             refreshAdmin();
         });
