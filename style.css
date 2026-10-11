@@ -131,6 +131,7 @@ a { color: var(--md-sys-color-primary); }
     outline-offset: 2px;
 }
 .site-footer p { margin: 0 0 4px; font-size: inherit; line-height: 1.5; }
+.site-footer .sep { margin: 0 8px; color: var(--md-sys-color-on-surface-variant); opacity: 0.7; }
 
 /* ---------- Navigation drawer ---------- */
 /* The shadow drawer panel is made transparent so our own inset, rounded nav is
