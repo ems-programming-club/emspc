@@ -166,8 +166,8 @@ a { color: var(--md-sys-color-primary); }
 #app-drawer {
     width: 380px;
     max-width: calc(100vw - 24px);
-    height: calc(100% - 12px);
-    margin: 0 12px 12px 0;
+    height: calc(100% - 20px);
+    margin: 8px 12px 12px 8px;
     box-sizing: border-box;
 }
 
