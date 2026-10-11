@@ -114,7 +114,7 @@ a { color: var(--md-sys-color-primary); }
     width: 100%;
     max-width: var(--page-max);
     margin: 0 auto;
-    padding: 24px 16px 10px 16px;
+    padding: 24px 24px 10px 24px;
 }
 
 .site-footer {
