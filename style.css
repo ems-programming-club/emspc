@@ -164,11 +164,21 @@ a { color: var(--md-sys-color-primary); }
 }
 /* ID selector beats the component's ::slotted width/height. */
 #app-drawer {
-    width: 400px;
+    width: 380px;
     max-width: calc(100vw - 40px);
     height: calc(100% - 60px);
     margin: 28px 32px 32px 28px;
     box-sizing: border-box;
+}
+
+/* Mobile: keep equal left/right gaps; the drawer flexes to fit the viewport. */
+@media (max-width: 599.98px) {
+    #app-drawer {
+        width: calc(100vw - 32px);
+        max-width: none;
+        height: calc(100% - 32px);
+        margin: 16px;
+    }
 }
 
 .drawer-nav { --m3e-list-item-padding-block: 4px; }
